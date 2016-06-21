@@ -1,0 +1,18 @@
+language: python
+python:
+  - "2.7"
+
+before_install:
+  curl -d access_token=$PARTICLE_ACCESS_TOKEN -d arg=1 https://api.particle.io/v1/devices/50ff6a065067545639420287/status
+
+# command to install dependencies
+install: "pip install -r requirements.txt"
+
+# command to run tests
+script: nosetests
+
+after_success:
+  curl -d access_token=$PARTICLE_ACCESS_TOKEN -d arg=0 https://api.particle.io/v1/devices/50ff6a065067545639420287/status
+
+after_failure:
+  curl -d access_token=$PARTICLE_ACCESS_TOKEN -d arg=2 https://api.particle.io/v1/devices/50ff6a065067545639420287/status
